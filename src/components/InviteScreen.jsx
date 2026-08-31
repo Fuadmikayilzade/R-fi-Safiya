@@ -30,6 +30,7 @@ export default function InviteScreen() {
   const drawing = useRef(false)
   const lastPos = useRef(null)
   const totalPx = useRef(0)
+  const hasScratched = useRef(false)
 
   useScrollReveal()
 
@@ -55,19 +56,36 @@ export default function InviteScreen() {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d', { willReadFrequently: true })
-    canvas.width = canvas.offsetWidth
-    canvas.height = canvas.offsetHeight
-    totalPx.current = canvas.width * canvas.height
-    const g = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
-    g.addColorStop(0, '#2d5016')
-    g.addColorStop(0.5, '#4a7c2f')
-    g.addColorStop(1, '#7ab355')
-    ctx.fillStyle = g
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-    ctx.fillStyle = 'rgba(255,255,255,0.18)'
-    ctx.font = 'italic 15px "Cormorant Garamond", serif'
-    ctx.textAlign = 'center'
-    ctx.fillText('✿  Cızaraq açın  ✿', canvas.width / 2, canvas.height / 2)
+
+    const paint = () => {
+      if (hasScratched.current) return // never redraw over the user's progress
+      // Re-measure every time — the wrap's height depends on the aspect-ratio
+      // reserved box, so this stays correct even before/after the photo loads.
+      const w = canvas.offsetWidth
+      const h = canvas.offsetHeight
+      if (w === 0 || h === 0) return
+      canvas.width = w
+      canvas.height = h
+      totalPx.current = w * h
+
+      const g = ctx.createLinearGradient(0, 0, w, h)
+      g.addColorStop(0, '#2d5016')
+      g.addColorStop(0.5, '#4a7c2f')
+      g.addColorStop(1, '#7ab355')
+      ctx.fillStyle = g
+      ctx.fillRect(0, 0, w, h)
+      ctx.fillStyle = 'rgba(255,255,255,0.18)'
+      ctx.font = 'italic 15px "Cormorant Garamond", serif'
+      ctx.textAlign = 'center'
+      ctx.fillText('✿  Cızaraq açın  ✿', w / 2, h / 2)
+    }
+
+    paint()
+
+    // Re-paint if the card's size ever changes (image finishing load, rotation, etc.)
+    const ro = new ResizeObserver(() => paint())
+    ro.observe(canvas)
+    return () => ro.disconnect()
   }, [])
 
   const getPos = (e, canvas) => {
@@ -78,6 +96,7 @@ export default function InviteScreen() {
   const scratch = (e) => {
     e.preventDefault()
     if (!drawing.current) return
+    hasScratched.current = true
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d', { willReadFrequently: true })
     const pos = getPos(e, canvas)
