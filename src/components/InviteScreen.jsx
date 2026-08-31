@@ -210,10 +210,10 @@ export default function InviteScreen() {
         <div className="dc-card">
           <img src={dressCode} alt="Dress Code" className="dc-img" />
           <div className="dc-info">
-            <p className="dc-theme">Elegant geyim</p>
+            <p className="dc-theme">Eleqant geyim</p>
             <p className="dc-desc">
               Xanımlar: Klassik və zərif axşam geyimi<br/>
-              Cənablar: Elegant və klassik geyim
+              Cənablar: Eleqant və klassik geyim
 
 
             </p>
