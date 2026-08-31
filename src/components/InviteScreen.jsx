@@ -210,15 +210,12 @@ export default function InviteScreen() {
         <div className="dc-card">
           <img src={dressCode} alt="Dress Code" className="dc-img" />
           <div className="dc-info">
-            <div className="dc-swatches">
-              {['#2d5016','#4a7c2f','#7ab355','#c8e8a8','#d4b06a'].map(c=>(
-                <span key={c} className="dc-swatch" style={{background:c}} />
-              ))}
-            </div>
-            <p className="dc-theme">Garden Green Elegance</p>
+            <p className="dc-theme">Elegant geyim</p>
             <p className="dc-desc">
-              Xanımlar: Yaşıl, zeytun, şampan çalarlarında zərif libas<br/>
-              Cənablar: Açıq gümüşü-bej kostyum, yaşıl qalstuk
+              Xanımlar: Klassik və zərif axşam geyimi<br/>
+              Cənablar: Elegant və klassik geyim
+
+
             </p>
           </div>
         </div>
